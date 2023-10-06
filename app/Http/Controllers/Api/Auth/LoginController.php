@@ -17,38 +17,39 @@ class LoginController extends Controller
      */
     public function index(Request $request)
     {
-        //set validasi
+        // Set validasi
         $validator = Validator::make($request->all(), [
-            'email'    => 'required|email',
+            'email'    => 'required', // Kolom "email" untuk menerima email atau username
             'password' => 'required',
         ]);
 
-        //response error validasi
+        // Response error validasi
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        //get "email" dan "password" dari input
-        $credentials = $request->only('email', 'password');
+        $loginField = $request->input('email');
 
-        //check jika "email" dan "password" tidak sesuai
-        if (!$token = auth()->guard('api')->attempt($credentials)) {
-
-            //response login "failed"
-            return response()->json([
-                'success' => false,
-                'message' => 'Email or Password is incorrect'
-            ], 400);
+        // Cek apakah email/username dan password sesuai
+        if (!$token = auth()->guard('api')->attempt(['email' => $loginField, 'password' => $request->input('password')])) {
+            // Cek apakah pengguna mencoba dengan username
+            if (!$token = auth()->guard('api')->attempt(['username' => $loginField, 'password' => $request->input('password')])) {
+                // Response login "failed"
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Email or Username or Password is incorrect'
+                ], 400);
+            }
         }
 
-        //response login "success" dengan generate "Token"
+        // Response login "success" dengan Token yang dibuat
         return response()->json([
-            'success'       => true,
-            'user'          => auth()->guard('api')->user()->only(['name', 'email']),
-            'permissions'   => auth()->guard('api')->user()->getPermissionArray(),
-            'token'         => $token
+            'success' => true,
+            'user' => auth()->guard('api')->user()->only(['name', 'email']),
+            'token' => $token
         ], 200);
     }
+
 
     /**
      * logout

@@ -8,19 +8,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Thread extends Model
+class ThreadCategory extends Model
 {
     use HasFactory, HasUuids;
-
-    // public $incrementing = false;
-    // protected $keyType = 'string';
+    protected $guarded = ['id'];
 
     public function getIncrementing()
     {
         return false;
     }
 
-   /**
+    /**
      * Get the auto-incrementing key type.
      *
      * @return string
@@ -30,22 +28,6 @@ class Thread extends Model
         return 'string';
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(ThreadCategory::class);
-    }
-
-    protected function image(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($image) => url('/storage/threads/' . $image),
-        );
-    }
 
     protected static function booted()
     {
@@ -56,4 +38,15 @@ class Thread extends Model
         });
     }
 
+    public function threads()
+    {
+        $this->hasMany(Thread::class);
+    }
+
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($image) => url('/storage/thread_categories/' . $image),
+        );
+    }
 }

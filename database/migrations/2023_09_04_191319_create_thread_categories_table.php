@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('scientific_works', function (Blueprint $table) {
+        Schema::create('thread_categories', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('title');
-            $table->string('slug');
-            $table->longText('content');
-            $table->string('attachment');
-            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('scientific_works');
+        Schema::dropIfExists('thread_categories');
     }
 };

@@ -41,7 +41,7 @@ return [
             'provider' => 'users',
         ],
         'api' => [
-            'driver' => 'jwt',      // <-- set ke "jwt"
+            'driver' => 'jwt',
             'provider' => 'users',
             'hash' => false,
         ],

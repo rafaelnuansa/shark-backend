@@ -12,11 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('threads', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('title');
+            $table->string('slug');
             $table->longText('content');
             $table->string('image')->nullable();
-            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->boolean('enable_comment')->default(false);
+            $table->unsignedBigInteger('views');
+            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignUuid('thread_category_id')->references('id')->on('thread_categories')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

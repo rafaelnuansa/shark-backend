@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ScientificWork extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
+
+    protected $guraded = ['id'];
 
     public function user()
     {
@@ -21,4 +24,16 @@ class ScientificWork extends Model
             get: fn ($attachment) => url('/storage/files/' . $attachment),
         );
     }
+
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+    public function getKeyType()
+    {
+        return 'string';
+    }
+
+
 }

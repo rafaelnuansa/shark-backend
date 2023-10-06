@@ -20,11 +20,11 @@ class UserController extends Controller
         //get users
         $users = User::when(request()->search, function($users) {
             $users = $users->where('name', 'like', '%'. request()->search . '%');
-        })->with('roles')->latest()->paginate(5);
+        })->latest()->paginate(5);
 
         //append query string to pagination links
         $users->appends(['search' => request()->search]);
-        
+
         //return with Api Resource
         return new UserResource(true, 'List Data Users', $users);
     }
@@ -39,8 +39,9 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name'     => 'required',
+            'username' => 'required',
             'email'    => 'required|unique:users',
-            'password' => 'required|confirmed' 
+            'password' => 'required|confirmed'
         ]);
 
         if ($validator->fails()) {
@@ -55,15 +56,15 @@ class UserController extends Controller
         ]);
 
         //assign roles to user
-        $user->assignRole($request->roles);
+        // $user->assignRole($request->roles);
 
         if($user) {
             //return success with Api Resource
-            return new UserResource(true, 'Data User Berhasil Disimpan!', $user);
+            return new UserResource(true, 'User Created Successfully!', $user);
         }
 
         //return failed with Api Resource
-        return new UserResource(false, 'Data User Gagal Disimpan!', null);
+        return new UserResource(false, 'Failed to save user data!', null);
     }
 
     /**
@@ -72,10 +73,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($username)
     {
-        $user = User::with('roles')->whereId($id)->first();
-        
+        $user = User::where($username)->first();
+
         if($user) {
             //return success with Api Resource
             return new UserResource(true, 'Detail Data User!', $user);
