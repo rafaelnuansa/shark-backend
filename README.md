@@ -26,6 +26,23 @@ Berikut adalah beberapa contoh penggunaan rute API pada proyek ini:
 - **Registrasi**
   - `POST /register`: Memungkinkan pengguna untuk mendaftar dan membuat akun baru.
   
+   Endpoint ini digunakan untuk mendaftarkan pengguna baru. Data yang diperlukan untuk registrasi adalah:
+  
+  - `name` (string): Nama lengkap pengguna.
+  - `username` (string): Nama pengguna yang akan digunakan untuk login.
+  - `email` (string): Alamat email pengguna.
+  - `password` (string): Kata sandi pengguna.
+  - `password_confirmation` (string): Konfirmasi kata sandi (harus sama dengan kata sandi).
+
+  Contoh body permintaan (JSON):
+  ```json
+  {
+      "name": "Nama Pengguna",
+      "username": "username_pengguna",
+      "email": "contoh@example.com",
+      "password": "password_pengguna",
+      "password_confirmation": "password_pengguna"
+  }
 - **Lupa Password**
   - `POST /password/forgot`: Mengizinkan pengguna untuk mengajukan permintaan lupa password.
   - `POST /password/reset`: Mengizinkan pengguna untuk mereset password mereka.
