@@ -10,7 +10,6 @@ Project API Untuk Blog Dosen yang menampung data threads/postingan dosen, serta 
     - [Thread](#thread)
     - [Profil Pengguna](#profil-pengguna)
     - [Karya Ilmiah](#karya-ilmiah)
-- [Lisensi](#lisensi)
 
 
 ## Penggunaan
@@ -68,7 +67,3 @@ Berikut adalah beberapa contoh penggunaan rute API pada proyek ini:
   - `PATCH /scientific-works/{scientificwork}`: Mengupdate karya ilmiah.
   - `GET /scientific-works/{scientificwork}`: Mendapatkan detail karya ilmiah.
   - `DELETE /scientific-works/{scientificwork}`: Menghapus karya ilmiah.
-
-### Lisensi
-
-Lisensi proyek Anda.
