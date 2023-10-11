@@ -58,6 +58,8 @@ Endpoint ini digunakan oleh pengguna yang ingin mereset kata sandi mereka. Untuk
       "email": "contoh@example.com"
   }
 
+  ```
+
 
 #### Logout
 
