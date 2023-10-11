@@ -3,9 +3,6 @@
 Project API Untuk Blog Dosen yang menampung data threads/postingan dosen, serta ScientificWork/Karya Ilmiah Dosen
 
 ## Daftar Isi
-- [Pengenalan](#pengenalan)
-- [Instalasi](#instalasi)
-- [Konfigurasi](#konfigurasi)
 - [Penggunaan](#penggunaan)
   - [Rute API](#rute-api)
     - [Autentikasi](#autentikasi)
