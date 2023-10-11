@@ -19,15 +19,21 @@ class ThreadController extends Controller
     public function index()
     {
         // Dapatkan thread dengan pencarian jika ada
-        $threads = Thread::with('categories')->when(request()->search, function ($query) {
+        $threads = Thread::with('thread_category' , 'user')->when(request()->search, function ($query) {
             $query->where('title', 'like', '%' . request()->search . '%');
-        })->with('user')->latest()->paginate(5);
+        })->latest()->paginate(5);
         // Tambahkan query string 'search' ke tautan pagination
         $threads->appends(['search' => request()->search]);
         // Mengembalikan data menggunakan ApiResource
         return new ApiResource(true, 'Threads berhasil diload', $threads);
     }
 
+
+    public function homepage()
+    {
+        $threads = Thread::with('thread_category', 'user')->latest()->take(10)->get();
+        return new ApiResource(true, 'Threads home berhasil diload', $threads);
+    }
 
     /**
      * Store a newly created resource in storage.

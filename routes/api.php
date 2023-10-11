@@ -18,7 +18,7 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 //group route with middleware "auth"
 Route::group(['middleware' => 'auth:api'], function() {
-    //logout
+//logout
 Route::get('/logout', [App\Http\Controllers\Api\Auth\LoginController::class, 'logout']);
 
 });
@@ -45,12 +45,15 @@ Route::delete('/scientific-works/{scientificwork}', [App\Http\Controllers\Api\Pu
 Route::prefix('admin')->group(function () {
     //group route with middleware "auth:api"
     Route::group(['middleware' => 'auth:api'], function () {
-
-        // Route::post('/login', [App\Http\Controllers\Api\Auth\LoginController::class, 'index']);
-        //users
         Route::apiResource('/users', App\Http\Controllers\Api\Admin\UserController::class);
-        // ->middleware('permission:users.index|users.store|users.update|users.delete');
 
     });
 });
 
+
+Route::prefix('public')->group(function () {
+    Route::get('threads', [App\Http\Controllers\Api\Public\ThreadController::class, 'index']);
+    Route::get('scientific-works', [App\Http\Controllers\Api\Public\ScientificWorkController::class, 'homepage']);
+    Route::get('threads-home', [App\Http\Controllers\Api\Public\ThreadController::class, 'homepage']);
+    Route::get('users', [App\Http\Controllers\Api\Public\UserController::class, 'index']);
+});

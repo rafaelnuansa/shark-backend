@@ -38,10 +38,10 @@ class RegisterController extends Controller
         $user->username = $request->input('username');
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
+        Mail::to($user->email)->send(new RegistrationConfirmation($user));
         $user->save();
 
         // Send registration confirmation email
-        Mail::to($user->email)->send(new RegistrationConfirmation($user));
         // Response berhasil mendaftar
         return new ApiResource(true, 'Registrasi berhasil', $user);
     }

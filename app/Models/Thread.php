@@ -20,11 +20,6 @@ class Thread extends Model
         return false;
     }
 
-   /**
-     * Get the auto-incrementing key type.
-     *
-     * @return string
-     */
     public function getKeyType()
     {
         return 'string';
@@ -35,7 +30,7 @@ class Thread extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function category()
+    public function thread_category()
     {
         return $this->belongsTo(ThreadCategory::class);
     }

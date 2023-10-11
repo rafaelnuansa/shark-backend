@@ -18,7 +18,7 @@ return new class extends Migration
             $table->longText('content');
             $table->string('image')->nullable();
             $table->boolean('enable_comment')->default(false);
-            $table->unsignedBigInteger('views');
+            $table->unsignedBigInteger('views')->default(0);
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignUuid('thread_category_id')->references('id')->on('thread_categories')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();

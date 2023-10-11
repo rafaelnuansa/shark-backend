@@ -25,6 +25,13 @@ class ScientificWorkController extends Controller
         return new ApiResource(true, 'Data Karya Ilmiah', $scientificWork);
     }
 
+    public function homepage()
+    {
+        
+        $scientificWork = ScientificWork::with('user')->latest()->take(10)->get();
+        return new ApiResource(true, 'Data Home Karya Ilmiah', $scientificWork);
+    }
+
     public function show($slug)
     {
     }

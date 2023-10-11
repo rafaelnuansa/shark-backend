@@ -114,6 +114,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         $this->hasMany(Thread::class);
     }
 
-
+    public function scientific_works()
+    {
+        $this->hasMany(ScientificWork::class);
+    }
 
 }

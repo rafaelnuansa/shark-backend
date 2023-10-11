@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->longText('content');
-            $table->string('attachment');
+            $table->string('attachment')->nullable();
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->bigInteger('views')->default(0);
             $table->timestamps();
         });
     }
