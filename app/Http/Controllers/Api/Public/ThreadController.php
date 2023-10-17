@@ -53,6 +53,7 @@ class ThreadController extends Controller
         $validator = Validator::make($request->all(), [
             'title'   => 'required|max:255',
             'content' => 'required',
+            'thread_category_id' => 'required',
             'image' => 'nullable|image|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000|image|max:2048|mimes:jpeg,png,gif,jpg,webp',
         ]);
 
@@ -65,6 +66,7 @@ class ThreadController extends Controller
         $thread = new Thread();
         $thread->title  = $request->title ?? 'Undefined title';
         $thread->content = $request->content;
+        $thread->thread_category_id = $request->thread_category_id;
         $slug = Str::slug($thread->title);
         $originalSlug = $slug;
 
@@ -120,6 +122,7 @@ class ThreadController extends Controller
         $validator = Validator::make($request->all(), [
             'title'   => 'required|max:255',
             'content' => 'required',
+            'thread_category_id' => 'required',
             'image' => 'nullable|image|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000|image|max:2048|mimes:jpeg,png,gif,jpg,webp',
 
         ]);
@@ -136,6 +139,7 @@ class ThreadController extends Controller
         // Perbarui atribut-atribut thread
         $thread->title   = $request->title;
         $thread->content = $request->content;
+        $thread->thread_category_id = $request->category_id;
 
         // Update juga slug
         $slug = Str::slug($thread->title);
