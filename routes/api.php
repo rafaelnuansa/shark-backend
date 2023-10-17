@@ -10,10 +10,10 @@ Route::post('password/forgot', [App\Http\Controllers\Api\Auth\ForgotPasswordCont
 
 Route::post('password/reset', [App\Http\Controllers\Api\Auth\ForgotPasswordController::class, 'reset']);
 // Password Reset Routes
-Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+// Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+// Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+// Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+// Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 
 //group route with middleware "auth"
@@ -22,7 +22,9 @@ Route::group(['middleware' => 'auth:api'], function() {
 Route::get('/logout', [App\Http\Controllers\Api\Auth\LoginController::class, 'logout']);
 
 });
-Route::group(['middleware' => 'auth:api'], function () {
+
+
+Route::group(['middleware' => 'auth:api', 'verifiedUser'], function () {
 Route::get('/threads', [App\Http\Controllers\Api\Public\ThreadController::class, 'index']);
 Route::post('/threads', [App\Http\Controllers\Api\Public\ThreadController::class, 'store']);
 Route::patch('/threads/{thread}', [App\Http\Controllers\Api\Public\ThreadController::class, 'update']);
@@ -53,7 +55,10 @@ Route::prefix('admin')->group(function () {
 
 Route::prefix('public')->group(function () {
     Route::get('threads', [App\Http\Controllers\Api\Public\ThreadController::class, 'index']);
+    Route::get('threads/category', [App\Http\Controllers\Api\Public\ThreadController::class, 'categories']);
+    Route::get('threads/{slug}', [App\Http\Controllers\Api\Public\ThreadController::class, 'show']);
     Route::get('scientific-works', [App\Http\Controllers\Api\Public\ScientificWorkController::class, 'homepage']);
     Route::get('threads-home', [App\Http\Controllers\Api\Public\ThreadController::class, 'homepage']);
     Route::get('users', [App\Http\Controllers\Api\Public\UserController::class, 'index']);
+    Route::get('users/{username}', [App\Http\Controllers\Api\Public\UserController::class, 'username']);
 });

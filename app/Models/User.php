@@ -111,12 +111,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     // relations
     public function threads()
     {
-        $this->hasMany(Thread::class);
+        return $this->hasMany(Thread::class);
     }
 
     public function scientific_works()
     {
-        $this->hasMany(ScientificWork::class);
+       return $this->hasMany(ScientificWork::class);
     }
 
 }

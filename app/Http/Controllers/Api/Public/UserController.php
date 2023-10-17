@@ -40,4 +40,29 @@ class UserController extends Controller
         
         return response()->json($responseData, 200, [], JSON_PRETTY_PRINT);
     }
+
+    public function username($username)
+    {
+        $users = User::where('username', $username)->with('threads')->first();
+        
+        // $responseData = [
+        //     'success' => true,
+        //     'message' => 'users berhasil diload',
+        //     'data' => $users->map(function ($user) {
+        //         return [
+        //             'id' => $user->id,
+        //             'name' => $user->name,
+        //             'username' => $user->username,
+        //             'avatar' => $user->avatar,
+        //             'phone' => $user->phone,
+        //             'bio' => $user->bio,
+        //         ];
+        //     }),
+        // ];
+        
+        // return response()->json($responseData, 200, [], JSON_PRETTY_PRINT);
+
+        
+        return new ApiResource(true, 'Data User', $users);
+    }
 }

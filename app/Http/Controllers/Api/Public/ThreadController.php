@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Public;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApiResource;
 use App\Models\Thread;
+use App\Models\ThreadCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -33,6 +34,12 @@ class ThreadController extends Controller
     {
         $threads = Thread::with('thread_category', 'user')->latest()->take(10)->get();
         return new ApiResource(true, 'Threads home berhasil diload', $threads);
+    }
+
+    public function categories()
+    {
+        $categories = ThreadCategory::all();
+        return new ApiResource(true, 'Categories fetched', $categories);
     }
 
     /**
@@ -93,9 +100,10 @@ class ThreadController extends Controller
      * @param  \App\Models\Thread  $thread
      * @return \App\Http\Resources\ApiResource
      */
-    public function show(Thread $thread)
+    public function show($slug)
     {
         // Mengambil data thread dengan user terkait
+        $thread = Thread::where('slug', $slug)->firstOrFail();
         $thread->load('user');
         return new ApiResource(true, 'Detail Thread', $thread);
     }
