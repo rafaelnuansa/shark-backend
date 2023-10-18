@@ -9,27 +9,28 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
 
 class PasswordResetController extends Controller
 {
     public function forgotPassword(Request $request)
     {
         $request->validate(['email' => 'required|email']);
-    
+
         $status = Password::sendResetLink($request->only('email'));
-    
+
         return $status === Password::RESET_LINK_SENT
             ? response()->json([
             'success' => true,
                 'message' => 'Password reset link sent to your email.'
             ], 200)
             : response()->json([
-                
+
             'success' => true,
             'message' => 'Unable to send password reset link.'
             ], 400);
     }
-    
+
     public function resetPassword(Request $request)
 {
     $request->validate([
