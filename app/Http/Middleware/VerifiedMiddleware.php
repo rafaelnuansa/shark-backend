@@ -16,14 +16,13 @@ class VerifiedMiddleware
     public function handle($request, Closure $next)
     {
         if (auth()->check() && !auth()->user()->verified) {
-            dd(auth()->user()->verified);
             // You can customize the response or redirect as needed.
             return response()->json([
                 'success' => false,
                 'error' => 'You must be verified to access this resource.',
             ], 403);
         }
-    
+
         return $next($request);
     }
 }

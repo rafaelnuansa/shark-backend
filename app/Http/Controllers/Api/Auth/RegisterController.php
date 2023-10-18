@@ -4,20 +4,16 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApiResource;
-use App\Mail\RegistrationConfirmation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
-    /**
-     * Handle a registration request for the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \App\Http\Resources\ApiResource
-     */
     public function index(Request $request)
     {
         // Validasi input
@@ -38,11 +34,31 @@ class RegisterController extends Controller
         $user->username = $request->input('username');
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
-        Mail::to($user->email)->send(new RegistrationConfirmation($user));
+
+
         $user->save();
 
-        // Send registration confirmation email
+        // Send the email verification notification
+        $user->sendEmailVerificationNotification();
+
+        // Event for registering
+        event(new Registered($user));
+
+
         // Response berhasil mendaftar
         return new ApiResource(true, 'Registrasi berhasil', $user);
+    }
+
+    public function resendVerificationEmail(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user && !$user->hasVerifiedEmail()) {
+            $user->sendEmailVerificationNotification();
+
+            return new ApiResource(true, 'Email verifikasi telah dikirim ulang.', 200);
+        } else {
+            return new ApiResource(false, 'Email sudah diverifikasi atau pengguna tidak ditemukan.', null, 422);
+        }
     }
 }

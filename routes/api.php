@@ -1,20 +1,26 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 
 //route login
 Route::post('login', [App\Http\Controllers\Api\Auth\LoginController::class, 'index']);
 Route::post('register', [App\Http\Controllers\Api\Auth\RegisterController::class, 'index']);
-Route::post('password/forgot', [App\Http\Controllers\Api\Auth\ForgotPasswordController::class, 'index']);
 
-Route::post('password/reset', [App\Http\Controllers\Api\Auth\ForgotPasswordController::class, 'reset']);
-// Password Reset Routes
-// Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-// Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-// Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-// Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+Route::get('/verify-email/{id}/{hash}', [App\Http\Controllers\Api\Auth\VerificationController::class, 'verify'])
+                ->middleware(['auth:api',  'throttle:6,1'])
+                ->name('verification.verify');
+Route::post('email/resend', [App\Http\Controllers\Api\Auth\VerificationController::class, 'resend'])->name('verification.resend')->middleware('auth:api');
 
+Route::post('password/forgot', [App\Http\Controllers\Api\Auth\PasswordResetController::class, 'forgotPassword'])->name('password.email');
+Route::post('password/reset', [App\Http\Controllers\Api\Auth\PasswordResetController::class, 'resetPassword'])->name('password.store');
+
+
+Route::post('/reset-password', [NewPasswordController::class, 'store'])
+                ->middleware('guest')
+                ->name('password.store');
 
 //group route with middleware "auth"
 Route::group(['middleware' => 'auth:api'], function() {

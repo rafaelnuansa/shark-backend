@@ -19,13 +19,19 @@ class ThreadController extends Controller
      */
     public function index()
     {
-        // Dapatkan thread dengan pencarian jika ada
-        $threads = Thread::with('thread_category' , 'user')->when(request()->search, function ($query) {
-            $query->where('title', 'like', '%' . request()->search . '%');
+        // Get threads with a search if provided
+        $threads = Thread::with('thread_category', 'user')->when(request()->q, function ($query) {
+            $searchQuery = strtolower(request()->q); // Convert the search query to lowercase
+            $query->where(function ($subquery) use ($searchQuery) {
+                $subquery->whereRaw("LOWER(title) LIKE ?", ["%" . $searchQuery . "%"])
+                    ->orWhereRaw("LOWER(content) LIKE ?", ["%" . $searchQuery . "%"]);
+            });
         })->latest()->paginate(5);
-        // Tambahkan query string 'search' ke tautan pagination
-        $threads->appends(['search' => request()->search]);
-        // Mengembalikan data menggunakan ApiResource
+
+        // Append the 'search' query string to the pagination links
+        $threads->appends(['search' => request()->q]);
+
+        // Return the data using ApiResource
         return new ApiResource(true, 'Threads berhasil diload', $threads);
     }
 

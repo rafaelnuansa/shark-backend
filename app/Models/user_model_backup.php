@@ -64,7 +64,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
     ];
 
     /**
@@ -120,8 +119,8 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->hasMany(ScientificWork::class);
     }
 
-    public function sendEmailVerificationNotification()
-    {
-        $this->notify(new \Illuminate\Auth\Notifications\VerifyEmail);
-    }
+    // public function sendEmailVerificationNotification()
+    // {
+    //     $this->notify(new \Illuminate\Auth\Notifications\VerifyEmail);
+    // }
 }
