@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('thread_images', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('image');
+            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
