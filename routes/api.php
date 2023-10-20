@@ -31,8 +31,10 @@ Route::get('/logout', [App\Http\Controllers\Api\Auth\LoginController::class, 'lo
 
 
 Route::group(['middleware' => 'auth:api', 'verifiedUser'], function () {
+Route::post('/threads/image/upload', [App\Http\Controllers\Api\UploadController::class, 'store']);
 Route::get('/threads', [App\Http\Controllers\Api\Public\ThreadController::class, 'index']);
 Route::post('/threads', [App\Http\Controllers\Api\Public\ThreadController::class, 'store']);
+
 Route::patch('/threads/{thread}', [App\Http\Controllers\Api\Public\ThreadController::class, 'update']);
 Route::get('/threads/{thread}', [App\Http\Controllers\Api\Public\ThreadController::class, 'show']);
 Route::delete('/threads/{thread}', [App\Http\Controllers\Api\Public\ThreadController::class, 'destroy']);
@@ -62,6 +64,7 @@ Route::prefix('admin')->group(function () {
 Route::prefix('public')->group(function () {
     Route::get('threads', [App\Http\Controllers\Api\Public\ThreadController::class, 'index']);
     Route::get('threads/category', [App\Http\Controllers\Api\Public\ThreadController::class, 'categories']);
+    Route::get('threads/{username}', [App\Http\Controllers\Api\Public\UserController::class, 'threads']);
     Route::get('threads/{slug}', [App\Http\Controllers\Api\Public\ThreadController::class, 'show']);
     Route::get('scientific-works', [App\Http\Controllers\Api\Public\ScientificWorkController::class, 'homepage']);
     Route::get('threads-home', [App\Http\Controllers\Api\Public\ThreadController::class, 'homepage']);

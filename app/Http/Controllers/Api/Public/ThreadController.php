@@ -101,6 +101,7 @@ class ThreadController extends Controller
         return new ApiResource(true, 'Berhasil Membuat Thread', $thread);
     }
 
+    
 
     /**
      * Display the specified resource.
